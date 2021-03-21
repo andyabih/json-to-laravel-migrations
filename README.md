@@ -72,11 +72,11 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string("name", 50)->index();
-			$table->enum("state", ['active', 'inactive'])->default('active');
-			$table->text("text");
-			$table->string("slug", 50)->unique();
-			$table->boolean("active")->default(false);
-			$table->foreignId("user_id")->nullable(true)->constrained()->onDelete('cascade');
+            $table->enum("state", ['active', 'inactive'])->default('active');
+            $table->text("text");
+            $table->string("slug", 50)->unique();
+            $table->boolean("active")->default(false);
+            $table->foreignId("user_id")->nullable(true)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
