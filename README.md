@@ -15,7 +15,7 @@ composer require --dev andyabih/json-to-laravel-migrations
 
 ## Creating the JSON schema
 Create a `schema.json` file in the root of your project, and use a template like the below:
-```
+```json
 {
     "posts": {
         "name"   : "string:50|index:50",
@@ -53,7 +53,7 @@ php artisan json:migrate schema.json
 ```
 
 The above schema will create something three different migrations. The `posts` schema will look like:
-```
+```php
 <?php
 
 use Illuminate\Support\Facades\Schema;
