@@ -21,6 +21,9 @@ class MigrationCreator {
     public function create() {
         foreach($this->methods as $table => $methods) {
             $this->createMigration($table, $methods);
+            
+            // So migrations get created in order
+            sleep(1);
         }
     }
 

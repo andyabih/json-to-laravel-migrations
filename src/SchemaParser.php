@@ -74,8 +74,11 @@ class SchemaParser {
      * @return string
      */
     private function generateBaseMethod($column, $columnType, $columnTypeParameters) {
-        $validColumnType  = Parameters::getValidColumnType($columnType);
-        $methodParameters = Parameters::getParameters($validColumnType);
+        $validColumnType      = Parameters::getValidColumnType($columnType);
+        $methodParameters     = Parameters::getParameters($validColumnType);
+        $columnTypeParameters = !empty($columnTypeParameters) ? 
+            explode(',', $columnTypeParameters[0]) :
+            [];
 
         $customParameters = [];
         foreach($methodParameters as $k => $parameter) {
@@ -85,7 +88,7 @@ class SchemaParser {
             }
 
             if(is_array($parameter)) {
-                $customParameters[] = "['" . implode("', '", explode(',', $columnTypeParameters[$k])) . "']";
+                $customParameters[] = "['" . implode("', '", $columnTypeParameters) . "']";
             } else {
                 $customParameters[] = $columnTypeParameters[$k];
             }
@@ -168,7 +171,7 @@ class SchemaParser {
      */
     private function joinParameters($parameters) {
         return !empty($parameters) ? 
-            implode(',', $parameters) :
+            implode(', ', $parameters) :
             '';
     }
 }
