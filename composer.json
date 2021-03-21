@@ -1,0 +1,29 @@
+{
+    "name": "andyabih/json-to-laravel-migrations",
+    "description": "Turn a JSON schema into Laravel migrations.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andy Abi Haidar",
+            "email": "andy@yllw.com"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+        "Andyabih\\JsonToLaravelMigrations\\": "src"
+      }
+    },
+
+    "require-dev": {
+        "orchestra/testbench": "^6.0"
+    },
+
+  "extra": {
+    "laravel": {
+        "providers": [
+            "Andyabih\\JsonToLaravelMigrations\\JsonToLaravelMigrationsServiceProvider"
+        ]
+    }
+}
+}
