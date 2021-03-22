@@ -1,6 +1,6 @@
 <?php
 
-namespace Andyabih\JsonToLaravelMigrations;
+namespace Andyabih\JsonToLaravelMigrations\Parsers;
 
 class ValidationParser
 {

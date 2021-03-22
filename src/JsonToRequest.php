@@ -1,8 +1,11 @@
 <?php
 
 namespace Andyabih\JsonToLaravelMigrations;
-
 use \Illuminate\Support\Collection;
+use Andyabih\JsonToLaravelMigrations\Parsers\ValidationParser;
+use Andyabih\JsonToLaravelMigrations\Creators\RequestCreator;
+
+
 
 class JsonToRequest extends Parameters {
     /**

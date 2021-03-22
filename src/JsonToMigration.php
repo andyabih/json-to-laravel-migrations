@@ -3,6 +3,9 @@
 namespace Andyabih\JsonToLaravelMigrations;
 
 use \Illuminate\Support\Collection;
+use Andyabih\JsonToLaravelMigrations\Parsers\SchemaParser;
+use Andyabih\JsonToLaravelMigrations\Creators\MigrationCreator;
+
 
 class JsonToMigration extends Parameters {
     /**

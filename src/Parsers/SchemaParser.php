@@ -1,6 +1,9 @@
 <?php
 
-namespace Andyabih\JsonToLaravelMigrations;
+namespace Andyabih\JsonToLaravelMigrations\Parsers;
+use Andyabih\JsonToLaravelMigrations\Helpers;
+use Andyabih\JsonToLaravelMigrations\Parameters;
+
 
 class SchemaParser {
     /**
