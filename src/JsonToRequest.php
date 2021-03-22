@@ -4,7 +4,7 @@ namespace Andyabih\JsonToLaravelMigrations;
 
 use \Illuminate\Support\Collection;
 
-class JsonToMigration extends Parameters {
+class JsonToRequest extends Parameters {
     /**
      * Array schema of the JSON file
      * 
@@ -24,8 +24,8 @@ class JsonToMigration extends Parameters {
     }
     
     private function parse() {
-        $schemaParser = new SchemaParser($this->schema);
-        $this->methods = $schemaParser->parse();
+        $validationParser = new ValidationParser($this->schema);
+        $this->requests = $validationParser->parse();
     }
 
     private function load(String $jsonPath) {
@@ -34,7 +34,7 @@ class JsonToMigration extends Parameters {
     }
 
     private function create() {
-        $migrationCreator = new MigrationCreator($this->methods);
-        $migrationCreator->create();
+        $requestCreator = new RequestCreator($this->requests);
+        $requestCreator->create();
     }
 }
