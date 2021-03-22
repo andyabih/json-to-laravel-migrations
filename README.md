@@ -18,52 +18,91 @@ Create a `schema.json` file in the root of your project, and use a template like
 ```json
 {
     "posts": {
-        "name"   : {
-            "migration" : "string:50|index:50",
-            "validation" : "required|min:5|max:255"
-            },
-        "state"  : { 
-            "migration" : "enum:active,inactive|default:active",
-            "validation" : "numeric|nullable"
-        },
-        "text"   : { 
-            "migration" :"text",
-            "validation" : "required"
-            },
-        "slug"   : {
-            "migration" :  "string:50|unique",
-            "validation": "required|unique|max:50"
-        },
-        "active" : {
-            "migration" : "boolean|default:false",
-            "validation" : "boolean|nullable"
-        },
-        "user_id": { 
-            "migration": "foreign|nullable|constrained|onDelete",
-            "validation" : "numeric|exists:App\Models\User,id"
+        "name": {
+            "migration": "string:50|index:50",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "text",
+                "label": "Name"
             }
+        },
+        "state": {
+            "migration": "enum:active,inactive|default:active",
+            "validation": "numeric|nullable",
+            "backpack": {
+                "type" : "text",
+                "label": "state"
+            }
+        },
+        "text": {
+            "migration": "text",
+            "validation": "required",
+            "backpack": {
+                "type" : "text",
+                "label": "Text"
+            }
+        },
+        "slug": {
+            "migration": "string:50|unique",
+            "validation": "required|unique|max:50",
+            "backpack": {
+                "type" : "text",
+                "label": "Slug"
+            }
+        },
+        "active": {
+            "migration": "boolean|default:false",
+            "validation": "boolean|nullable",
+            "backpack": {
+                "type" : "checkbox",
+                "label": "is Active?"
+            }
+        },
+        "user_id": {
+            "migration": "foreign|nullable|constrained|onDelete",
+            "validation": "numeric|exists:App\\Models\\User,id",
+            "backpack": {
+                "type" : "relationship",
+                "label": "Related User",
+                "entity": "user"
+            }
+        }
     },
-
     "categories": {
-        "name" : {
-            "migrations" : "string",
-            "validation" : "required|min:5|max:255"
+        "name": {
+            "migration": "string",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "text",
+                "label": "Name"
+            }
         },
         "image": {
-            "migrations" : "string",
-            "validation" : "required|min:5|max:255"
-        },
+            "migration": "string",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "image",
+                "label": "Image"
+            }
+        }
     },
-
     "subcategories": {
-        "name"       : {
-            "migrations" : "string",
-            "validation" : "required|min:5|max:255"
+        "name": {
+            "migration": "string",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "text",
+                "label": "Name"
+            }
         },
         "category_id": {
-            "migrations" : "foreign|constrained",
-            "validation" : "required|numeric|exists:App\Models\Category,id"
-        },
+            "migration": "foreign|constrained",
+            "validation": "required|numeric|exists:App\\Models\\Category,id",
+            "backpack": {
+                "type" : "relationship",
+                "label": "Category"
+            }
+        }
     }
 }
 ```
