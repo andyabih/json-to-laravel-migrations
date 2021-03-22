@@ -1,6 +1,9 @@
 <?php
 
-namespace Andyabih\JsonToLaravelMigrations;
+namespace Andyabih\JsonToLaravelMigrations\Parsers;
+use Andyabih\JsonToLaravelMigrations\Helpers;
+use Andyabih\JsonToLaravelMigrations\Parameters;
+
 
 class SchemaParser {
     /**
@@ -26,8 +29,9 @@ class SchemaParser {
      */
     public function parse() {
         $tables = Helpers::justKeys($this->schema);
-        
+
         foreach($this->schema as $table => $columns) {
+
             $tables[$table] = $this->generateMethods($columns);
         }
         
@@ -41,9 +45,8 @@ class SchemaParser {
      */
     private function generateMethods(Array $columns) {
         $methods = [];
-
         foreach($columns as $column => $parameters) {
-            $methods[] = $this->generateMethod($column, $parameters);
+            $methods[] = $this->generateMethod($column, $parameters['migration']);
         }
         
         return $methods;

@@ -1,13 +1,13 @@
 <?php
 
 namespace Andyabih\JsonToLaravelMigrations;
-
 use \Illuminate\Support\Collection;
-use Andyabih\JsonToLaravelMigrations\Parsers\SchemaParser;
-use Andyabih\JsonToLaravelMigrations\Creators\MigrationCreator;
+use Andyabih\JsonToLaravelMigrations\Parsers\ValidationParser;
+use Andyabih\JsonToLaravelMigrations\Creators\RequestCreator;
 
 
-class JsonToMigration extends Parameters {
+
+class JsonToRequest extends Parameters {
     /**
      * Array schema of the JSON file
      * 
@@ -18,7 +18,7 @@ class JsonToMigration extends Parameters {
     /**
      * Schema migration methods
      */
-    protected $methods;
+    protected $requests;
 
     public function __construct($schema) {
         $this->schema = $schema;
@@ -27,13 +27,14 @@ class JsonToMigration extends Parameters {
     }
     
     private function parse() {
-        $schemaParser = new SchemaParser($this->schema);
-        $this->methods = $schemaParser->parse();
+        $validationParser = new ValidationParser($this->schema);
+        $this->requests = $validationParser->parse();
         return $this;
     }
 
+
     private function create() {
-        $migrationCreator = new MigrationCreator($this->methods);
-        $migrationCreator->create();
+        $requestCreator = new RequestCreator($this->requests);
+        $requestCreator->create();
     }
 }
