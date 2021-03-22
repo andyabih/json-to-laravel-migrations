@@ -15,23 +15,20 @@ class JsonToRequest extends Parameters {
     /**
      * Schema migration methods
      */
-    protected $methods, $requests;
+    protected $requests;
 
-    public function __construct($jsonPath) {
-        $this->load($jsonPath);
-        $this->parse();
-        $this->create();
+    public function __construct($schema) {
+        $this->schema = $schema;
+        $this->parse()
+        ->create();
     }
     
     private function parse() {
         $validationParser = new ValidationParser($this->schema);
         $this->requests = $validationParser->parse();
+        return $this;
     }
 
-    private function load(String $jsonPath) {
-        $jsonParser = new JsonParser($jsonPath);
-        $this->schema = $jsonParser->parse();
-    }
 
     private function create() {
         $requestCreator = new RequestCreator($this->requests);

@@ -15,22 +15,18 @@ class JsonToMigration extends Parameters {
     /**
      * Schema migration methods
      */
-    protected $methods, $requests;
+    protected $methods;
 
-    public function __construct($jsonPath) {
-        $this->load($jsonPath);
-        $this->parse();
-        $this->create();
+    public function __construct($schema) {
+        $this->schema = $schema;
+        $this->parse()
+        ->create();
     }
     
     private function parse() {
         $schemaParser = new SchemaParser($this->schema);
         $this->methods = $schemaParser->parse();
-    }
-
-    private function load(String $jsonPath) {
-        $jsonParser = new JsonParser($jsonPath);
-        $this->schema = $jsonParser->parse();
+        return $this;
     }
 
     private function create() {
