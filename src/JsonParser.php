@@ -34,15 +34,18 @@ class JsonParser {
             $schema[$table] = [];
             
             foreach($columns as $column => $parameters) {
-                $parametersList = explode('|', $parameters);
+                $parametersList = explode('|', $parameters['migration']);
                 $parametersList = array_map(function($parameter) {
                     return explode(':', $parameter);
                 }, $parametersList);
 
-                $schema[$table][$column] = $parametersList;
-            }
-        }
+                $schema[$table][$column]['migration'] = $parametersList;
+                if (isset($parameters['validation'])){
+                    $schema[$table][$column]['validation'] = $parameters['validation'];
+                }
 
+            }
+        }   
         return $schema;
     }
 
