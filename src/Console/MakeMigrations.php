@@ -18,13 +18,13 @@ class MakeMigrations extends Command {
         $this->info("Parsing json File...");
         $json = (new JsonParser($this->argument('file')))->parse();;
 
-        $this->info("Creating migrations...");
-        new JsonToMigration($json);
-        $this->info("Migrations created!");
+        // $this->info("Creating migrations...");
+        // new JsonToMigration($json);
+        // $this->info("Migrations created!");
 
-        $this->info("Creating Requests...");
-        new JsonToRequest($json);
-        $this->info("Requests created!");
+        // $this->info("Creating Requests...");
+        // new JsonToRequest($json);
+        // $this->info("Requests created!");
 
         $this->info("Creating Crud Controllers...");
         new JsonToBackpackController($json);
