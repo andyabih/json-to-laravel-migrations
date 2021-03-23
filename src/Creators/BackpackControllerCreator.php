@@ -9,6 +9,7 @@ class BackpackControllerCreator
     use HasBackpackFunctions;
     protected $modelName, $controllers;
     protected $allowedOperations = ['list', 'create'];
+
     public function __construct($controllers)
     {
         $this->controllers = $controllers;
@@ -28,7 +29,7 @@ class BackpackControllerCreator
     }
 
 
-    /** 
+    /**
      * @param string $table
      * @param array $controller
      * @return string $modelName
@@ -68,13 +69,13 @@ class BackpackControllerCreator
         $fields = [];
         foreach ($controller as $field => $parameters) {
             if (is_array($parameters)) {
-               array_push($fields, $this->getDescriptiveField($field, $parameters));
+                array_push($fields, $this->getDescriptiveField($field, $parameters));
             } else {
                 array_push($fields, $this->getShorthandField($field, $parameters));
             }
         }
 
-        foreach($this->allowedOperations as $operation){
+        foreach ($this->allowedOperations as $operation) {
             $stub = str_replace("{{{$operation}OperationFields}}", $this->generateOperations(\Arr::pluck($fields, $operation)), $stub);
         }
 
@@ -84,26 +85,30 @@ class BackpackControllerCreator
     private function getShorthandField($field, $parameters)
     {
         return array(
-            "list" => array("name" => $field, "type" => $parameters, "label" => ucfirst($field)),
-            "create" => array("name" => $field, "type" => $parameters, "label" => ucfirst($field)),
+            "list" => array("name" => $field, "type" => $parameters),
+            "create" => array("name" => $field, "type" => $parameters),
         );
     }
 
     private function getDescriptiveField($field, $parameters)
-    {  
+    {
         $fields = [];
         //get field details for each operation
-        foreach( $this->allowedOperations as $operation){
-            if(isset($parameters[$operation])){
+        foreach ($this->allowedOperations as $operation) {
+            if (isset($parameters[$operation])) {
                 $parameters[$operation]['name'] = $field;
-               $fields[$operation] = $parameters[$operation];
+                $fields[$operation] = $parameters[$operation];
             }
         }
         //if only one operation is specified, generalize to the other operations
-        if(sizeof($fields) === 1){
+        
+        // $parameters['list'] = $parameters['list'] ?? $parameters['create'];
+        // $parameters['create'] = $parameters['create'] ?? $parameters['list'];
+
+        if (sizeof($fields) === 1) {
             $unspecified = \Arr::except($this->allowedOperations, [head(array_keys($fields))]);
 
-            foreach($unspecified as $missing) {
+            foreach ($unspecified as $missing) {
                 $fields[$missing] = head($fields);
             }
         }
