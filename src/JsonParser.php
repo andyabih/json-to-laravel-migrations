@@ -44,6 +44,10 @@ class JsonParser {
                     $schema[$table][$column]['validation'] = $parameters['validation'];
                 }
 
+                if(isset($parameters['backpack'])){
+                    $schema[$table][$column]['backpack'] = $parameters['backpack'];
+                }
+
             }
         }   
         return $schema;

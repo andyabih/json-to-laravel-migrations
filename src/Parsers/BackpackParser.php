@@ -1,9 +1,12 @@
 <?php
 
 namespace Andyabih\JsonToLaravelMigrations\Parsers;
+use Andyabih\JsonToLaravelMigrations\Traits\HasParameterChecks;
 
 class BackpackParser
 {
+    use HasParameterChecks;
+
     protected $key = 'backpack';
     protected $schema, $requests = [];
 
@@ -17,16 +20,11 @@ class BackpackParser
     {
         foreach ($this->schema as $table => $columns) {
             foreach ($columns as $column => $parameters) {
-                if ($this->wantsBackpack($parameters)) {
+                if ($this->wantsParameter($parameters)) {
                     $this->requests[$table][$column] = $parameters[$this->key];
                 }
             }
         }
         return $this->requests;
-    }
-
-    public function wantsBackpack($parameters)
-    {
-        return isset($parameters[$this->key]);
     }
 }

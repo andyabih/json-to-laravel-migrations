@@ -56,7 +56,7 @@ class RequestCreator
 
     private function getStub()
     {
-        return file_get_contents(__DIR__ . './../stubs/migration.stub');
+        return file_get_contents(__DIR__ . './../stubs/request.stub');
     }
 
     private function getPath($filename) {

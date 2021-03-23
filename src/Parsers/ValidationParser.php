@@ -1,9 +1,10 @@
 <?php
 
 namespace Andyabih\JsonToLaravelMigrations\Parsers;
-
+use Andyabih\JsonToLaravelMigrations\Traits\HasParameterChecks;
 class ValidationParser
 {
+    use HasParameterChecks;
     protected $key = 'validation';
     protected $schema, $requests = [];
 
@@ -17,7 +18,7 @@ class ValidationParser
     {
         foreach ($this->schema as $table => $columns) {
             foreach ($columns as $column => $parameters) {
-                if ($this->wantsValidation($parameters)) {
+                if ($this->wantsParameter($parameters)) {
                     $this->requests[$table][$column] = $parameters[$this->key];
                 }
             }
@@ -26,8 +27,4 @@ class ValidationParser
         return $this->requests;
     }
 
-    public function wantsValidation($parameters)
-    {
-        return isset($parameters[$this->key]);
-    }
 }
