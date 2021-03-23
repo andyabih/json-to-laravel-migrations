@@ -20,19 +20,19 @@ class BackpackControllerCreator
         }
 
         foreach ($this->controllers as $table => $controller) {
-            $this->createController($table, $controller);
-            $this->addRoute();
+            $modelName = $this->createController($table, $controller);
+            $routeName = $this->addRoute($modelName);
+            $this->addToSidebar($modelName, $routeName);
         }
     }
 
 
     /** 
-     * @TODO: add side bar content
-     * Steal backpack/crud/src/console/commands/AddCustommRouteContent.php
-     * @TODO: add to backpack custom routes 
-     * Steal backpack/crud/src/console/commands/AddSidebarContent.php
+     * @param string $table
+     * @param array $controller
+     * @return string $modelName
      * */
-    protected function createController($table, $controller)
+    protected function createController($table, $controller): string
     {
         $modelName = $this->generateModelName($table);
         $filename = $this->generateFileName($modelName);
@@ -40,15 +40,41 @@ class BackpackControllerCreator
         $path     = $this->getPath($filename);
 
         file_put_contents($path, $stub);
+        return $modelName;
     }
 
-    private function addRoute()
+    private function addToSidebar($modelName, $routeName)
+    {
+        $path = 'resources/views/vendor/backpack/base/inc/sidebar_content.blade.php';
+        $disk_name = config('backpack.base.root_disk_name');
+
+        $disk = \Storage::disk($disk_name);
+        $itemName = \Str::plural($modelName);
+
+        $code = "<li class='nav-item'><a class='nav-link' href='{{ backpack_url('{$routeName}') }}'>{$itemName}</a></li>";
+
+        if ($disk->exists($path)) {
+            $contents = $disk->get($path);
+            $file_lines = file($disk->path($path), FILE_IGNORE_NEW_LINES);
+
+
+            if (!$disk->put($path, $contents . PHP_EOL . $code)) {
+                throw new Error('Could not write to sidebar_content file.');
+            }
+        } else {
+            throw new Error('The sidebar_content file does not exist. Make sure Backpack is properly installed.');
+        }
+    }
+
+    private function addRoute($modelName)
     {
         $path = 'routes/backpack/custom.php';
         $disk_name = config('backpack.base.root_disk_name');
         $disk = \Storage::disk($disk_name);
-        $code = 'test';
-        // Route::crud('category', 'CategoryCrudController')
+        $routeName = lcfirst($modelName);
+        $controllerName = $modelName . 'CrudController';
+        $code = "Route::crud('{$routeName}', '{$controllerName}');";
+
         if ($disk->exists($path)) {
             $old_file_path = $disk->path($path);
 
@@ -64,6 +90,7 @@ class BackpackControllerCreator
                 throw new Error('Could not write to file: ' . $path);
             }
         }
+        return $routeName;
     }
 
     private function customRoutesFileEndLine($file_lines)
