@@ -18,22 +18,91 @@ Create a `schema.json` file in the root of your project, and use a template like
 ```json
 {
     "posts": {
-        "name"   : "string:50|index:50",
-        "state"  : "enum:active,inactive|default:active",
-        "text"   : "text",
-        "slug"   : "string:50|unique",
-        "active" : "boolean|default:false",
-        "user_id": "foreign|nullable|constrained|onDelete"
+        "name": {
+            "migration": "string:50|index:50",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "text",
+                "label": "Name"
+            }
+        },
+        "state": {
+            "migration": "enum:active,inactive|default:active",
+            "validation": "numeric|nullable",
+            "backpack": {
+                "type" : "text",
+                "label": "state"
+            }
+        },
+        "text": {
+            "migration": "text",
+            "validation": "required",
+            "backpack": {
+                "type" : "text",
+                "label": "Text"
+            }
+        },
+        "slug": {
+            "migration": "string:50|unique",
+            "validation": "required|unique|max:50",
+            "backpack": {
+                "type" : "text",
+                "label": "Slug"
+            }
+        },
+        "active": {
+            "migration": "boolean|default:false",
+            "validation": "boolean|nullable",
+            "backpack": {
+                "type" : "checkbox",
+                "label": "is Active?"
+            }
+        },
+        "user_id": {
+            "migration": "foreign|nullable|constrained|onDelete",
+            "validation": "numeric|exists:App\\Models\\User,id",
+            "backpack": {
+                "type" : "relationship",
+                "label": "Related User",
+                "entity": "user"
+            }
+        }
     },
-
     "categories": {
-        "name" : "string",
-        "image": "string"
+        "name": {
+            "migration": "string",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "text",
+                "label": "Name"
+            }
+        },
+        "image": {
+            "migration": "string",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "image",
+                "label": "Image"
+            }
+        }
     },
-
     "subcategories": {
-        "name"       : "string",
-        "category_id": "foreign|constrained"
+        "name": {
+            "migration": "string",
+            "validation": "required|min:5|max:255",
+            "backpack": {
+                "type" : "text",
+                "label": "Name"
+            }
+        },
+        "category_id": {
+            "migration": "foreign|constrained",
+            "validation": "required|numeric|exists:App\\Models\\Category,id",
+            "backpack": {
+                "type" : "relationship",
+                "label": "Category"
+            }
+        }
     }
 }
 ```
@@ -41,10 +110,18 @@ The main keys of your JSON represent the table names. Make sure to create them i
 
 Next, for each table, define your columns as keys (so `name`, `state`, `text`, ... in this case), and set their properties.
 
-## Properties
+
+
+## Migration Properties
+All migration properties should be under the 'migration' key in the json object under the related column.
+
 Properties are separated with a pipe (`|`), and the first property should always be the column type. The package supports every column type in Laravel. 
 
 Additional options (such as string length) can be supplied using a colon (`:`), followed by the value of the option. Multiple options can be supplied (for `float`, for example).
+
+## Validation Properties
+All validation properties should be under the 'validation' key in the json object under the related column.
+The same laravel validation rules are used.
 
 ## Migrations
 Run the above using:
@@ -52,7 +129,7 @@ Run the above using:
 php artisan json:migrate schema.json
 ```
 
-The above schema will create something three different migrations. The `posts` schema will look like:
+The above schema will create something three different migrations and Three different requests . The `posts` schema will look like:
 ```php
 <?php
 

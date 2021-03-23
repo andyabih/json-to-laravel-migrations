@@ -1,6 +1,6 @@
 <?php
 
-namespace Andyabih\JsonToLaravelMigrations;
+namespace Andyabih\JsonToLaravelMigrations\Creators;
 
 class MigrationCreator {
     /**
@@ -55,7 +55,7 @@ class MigrationCreator {
     }
 
     private function getStub() {
-        return file_get_contents(__DIR__ . '/stubs/migration.stub');
+        return file_get_contents(__DIR__ . './../stubs/migration.stub');
     }
 
     private function getPath($filename) {
